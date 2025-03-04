@@ -38,3 +38,7 @@ Packages/*/
 
 # Asset meta files should NOT be ignored — Unity needs them
 !Assets/**/*.meta
+Library/
+Logs/
+.vs/
+obj/
