@@ -32,10 +32,10 @@ public class CharacterStats : MonoBehaviour
     public void UpdateStats(string name, int newStamina, int newHP, int newLevel, string newRank)
     {
         characterName = name;
-        stamina = newStamina;
-        hp = newHP;
-        level = newLevel;
-        rank = newRank;
+        this.stamina = newStamina;
+        this.hp = newHP;
+        this.level = newLevel;
+        this.rank = newRank;
 
         OnStatsChanged?.Invoke(); // Event auslösen, um das UI zu aktualisieren
     }

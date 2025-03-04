@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UpdateUI();
+        CharacterStats.Instance.OnStatsChanged += UpdateUI;
     }
 
     //Aktualisiert das UI mit aktuellen Werten
