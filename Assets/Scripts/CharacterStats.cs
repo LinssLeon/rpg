@@ -1,42 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance { get; private set; }
 
-    [Header("CharacterInfo")]
-    public string characterName = "Janis";
-    public int stamina = 100;
-    public int hp = 100;
-    public int level = 1;
-    public string rank = "Rekrut";
+    public string CharacterName { get; private set; }
+    public int Stamina { get; private set; }
+    public int Health { get; private set; }
+    public int Level { get; private set; }
+    public string Rank { get; private set; }
 
-    public event Action OnStatsChanged;
+    public delegate void StatsChanged();
+    public event StatsChanged OnStatsChanged;
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject); // Stellt sicher, dass nur eine Instanz existiert
+            return;
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void UpdateStats(string name, int newStamina, int newHP, int newLevel, string newRank)
+    public void UpdateStats(string characterName, int stamina, int health, int level, string rank)
     {
-        characterName = name;
-        this.stamina = newStamina;
-        this.hp = newHP;
-        this.level = newLevel;
-        this.rank = newRank;
+        CharacterName = characterName;
+        Stamina = stamina;
+        Health = health;
+        Level = level;
+        Rank = rank;
 
-        OnStatsChanged?.Invoke(); // Event auslösen, um das UI zu aktualisieren
+        OnStatsChanged?.Invoke();
     }
 }

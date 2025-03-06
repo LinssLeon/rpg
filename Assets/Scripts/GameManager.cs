@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public enum GameState { MainMenu, Exploration, Training, Battle}
+    public enum GameState { MainMenu, Exploration, Training, Battle }
     public GameState currentState { get; private set; }
 
     [Header("Character UI Elements")]
@@ -19,9 +19,9 @@ public class GameManager : MonoBehaviour
 
     //Beispielwerte zum testen:
 
-    private string characterName = "Janis";
+    private string characterName { get; set; }
     private int stamina = 100;
-    private int health = 10;
+    private int health = 100;
     private int level = 1;
     private string rank = "Rekrut";
 
@@ -35,13 +35,37 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        if (CharacterStats.Instance == null)
+        {
+            Debug.Log("CharacterStats wurde nicht gefunden, daher wird es erstellt.");
+            GameObject charStatsObj = new GameObject("CharacterStats");
+            charStatsObj.AddComponent<CharacterStats>();
+        }
     }
 
     private void Start()
     {
+        if (CharacterStats.Instance == null)
+        {
+            Debug.LogError("CharacterStats.Instance ist null! Stelle sicher, dass CharacterStats in der Szene existiert.");
+            return; // verhindert weitere Fehler
+        }
+
+        // Werte aus CharacterStats ziehen und ins UI übertragen
+        SetCharacterStats(
+            CharacterStats.Instance.CharacterName,
+            CharacterStats.Instance.Stamina,
+            CharacterStats.Instance.Health,
+            CharacterStats.Instance.Level,
+            CharacterStats.Instance.Rank
+        );
+
         UpdateUI();
         CharacterStats.Instance.OnStatsChanged += UpdateUI;
     }
+
+
 
     //Aktualisiert das UI mit aktuellen Werten
     public void UpdateUI()

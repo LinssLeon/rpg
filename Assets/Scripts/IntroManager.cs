@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System;
 
 public class IntroManager : MonoBehaviour
 {
@@ -16,7 +15,14 @@ public class IntroManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(playerName))
         {
-            CharacterStats.Instance.UpdateStats(playerName, 100, 100, 1, "Recruit");
+            if (CharacterStats.Instance == null)
+            {
+                GameObject characterStatsObj = new GameObject("CharacterStats");
+                characterStatsObj.AddComponent<CharacterStats>();
+            }
+
+            CharacterStats.Instance.UpdateStats(playerName, 100, 100, 1, "Rekrut");
+
             SceneManager.LoadScene("GameScene");
         }
         else
@@ -34,20 +40,4 @@ public class IntroManager : MonoBehaviour
 
         errorMessage.gameObject.SetActive(false);
     }
-
-    private void Awake()
-    {
-        if (errorMessage == null)
-        {
-            Debug.LogError("ErrorMessage is not assigned in the Inspector!");
-        }
-        if (CharacterStats.Instance == null)
-        {
-            Debug.LogError("CharacterStats.Instance ist null! Der GameManager fehlt in der Szene.");
-        }
-
-    }
-
-
-
 }
