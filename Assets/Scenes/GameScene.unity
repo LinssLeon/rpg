@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 107632320}
   - component: {fileID: 107632319}
   m_Layer: 5
-  m_Name: HP
+  m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -256,55 +256,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 107632317}
   m_CullTransparentMesh: 1
---- !u!1 &508067675
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 508067677}
-  - component: {fileID: 508067676}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &508067676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508067675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b8cae6fcaffe4f6ca13eecbf63a5acb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterNameText: {fileID: 1938240670}
-  staminaText: {fileID: 593493843}
-  hpText: {fileID: 107632319}
-  levelText: {fileID: 1560059950}
-  rankText: {fileID: 1316212579}
---- !u!4 &508067677
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508067675}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 717.5, y: 316.99756, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &593493841
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +268,7 @@ GameObject:
   - component: {fileID: 593493844}
   - component: {fileID: 593493843}
   m_Layer: 5
-  m_Name: Stamina
+  m_Name: StaminaText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -633,7 +584,7 @@ GameObject:
   - component: {fileID: 1316212580}
   - component: {fileID: 1316212579}
   m_Layer: 5
-  m_Name: Rang
+  m_Name: RankText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,7 +720,7 @@ GameObject:
   - component: {fileID: 1560059951}
   - component: {fileID: 1560059950}
   m_Layer: 5
-  m_Name: Level
+  m_Name: LevelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -995,7 +946,7 @@ GameObject:
   - component: {fileID: 1938240671}
   - component: {fileID: 1938240670}
   m_Layer: 5
-  m_Name: CharacterName
+  m_Name: CharacterNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1192,6 +1143,5 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1881419219}
-  - {fileID: 508067677}
   - {fileID: 1188854172}
   - {fileID: 1954924866}

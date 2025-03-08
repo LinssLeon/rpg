@@ -4,11 +4,12 @@ public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance { get; private set; }
 
-    public string CharacterName { get; private set; }
-    public int Stamina { get; private set; }
-    public int Health { get; private set; }
-    public int Level { get; private set; }
-    public string Rank { get; private set; }
+    [Header("Character Stats")]
+    public string CharacterName;
+    public int Stamina;
+    public int Health;
+    public int Level;
+    public string Rank;
 
     public delegate void StatsChanged();
     public event StatsChanged OnStatsChanged;
@@ -17,7 +18,7 @@ public class CharacterStats : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); // Stellt sicher, dass nur eine Instanz existiert
+            Destroy(gameObject);
             return;
         }
 
@@ -27,11 +28,13 @@ public class CharacterStats : MonoBehaviour
 
     public void UpdateStats(string characterName, int stamina, int health, int level, string rank)
     {
-        CharacterName = characterName;
-        Stamina = stamina;
-        Health = health;
-        Level = level;
-        Rank = rank;
+        this.CharacterName = characterName;
+        this.Stamina = stamina;
+        this.Health = health;
+        this.Level = level;
+        this.Rank = rank;
+
+        Debug.Log($"Stats gesetzt: Name={CharacterName}, Stamina={Stamina}, Health={Health}, Level={Level}, Rank={Rank}");
 
         OnStatsChanged?.Invoke();
     }

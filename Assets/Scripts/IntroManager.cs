@@ -2,12 +2,28 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.UI;
 
 public class IntroManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public TMP_InputField nameInputField;
     public TextMeshProUGUI errorMessage;
+    public Button submitButton;
+
+    private void Start()
+    {
+        nameInputField.Select();
+        nameInputField.ActivateInputField();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            OnSubmitName();
+        }
+    }
 
     public void OnSubmitName()
     {
@@ -22,6 +38,7 @@ public class IntroManager : MonoBehaviour
             }
 
             CharacterStats.Instance.UpdateStats(playerName, 100, 100, 1, "Rekrut");
+            DontDestroyOnLoad(CharacterStats.Instance.gameObject);
 
             SceneManager.LoadScene("GameScene");
         }

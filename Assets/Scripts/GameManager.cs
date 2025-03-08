@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,9 +19,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI rankText;
 
-    //Beispielwerte zum testen:
-
-    private string characterName { get; set; }
+    private string characterName;
     private int stamina = 100;
     private int health = 100;
     private int level = 1;
@@ -27,55 +27,53 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("GameManager Awake aufgerufen");
+
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); //Nur ein Gamemanager soll existieren
+            Debug.LogWarning("Ein zweiter GameManager wurde gefunden und wird zerstört!");
+            Destroy(gameObject);
             return;
         }
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        if (CharacterStats.Instance == null)
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene")
         {
-            Debug.Log("CharacterStats wurde nicht gefunden, daher wird es erstellt.");
-            GameObject charStatsObj = new GameObject("CharacterStats");
-            charStatsObj.AddComponent<CharacterStats>();
+            Debug.Log("GameScene geladen, UI-Elemente werden gesucht...");
+
+            characterNameText = GameObject.Find("CharacterNameText")?.GetComponent<TextMeshProUGUI>();
+            staminaText = GameObject.Find("StaminaText")?.GetComponent<TextMeshProUGUI>();
+            hpText = GameObject.Find("HPText")?.GetComponent<TextMeshProUGUI>();
+            levelText = GameObject.Find("LevelText")?.GetComponent<TextMeshProUGUI>();
+            rankText = GameObject.Find("RankText")?.GetComponent<TextMeshProUGUI>();
+
+            if (CharacterStats.Instance != null)
+            {
+                SetCharacterStats(
+                    CharacterStats.Instance.CharacterName,
+                    CharacterStats.Instance.Stamina,
+                    CharacterStats.Instance.Health,
+                    CharacterStats.Instance.Level,
+                    CharacterStats.Instance.Rank
+                );
+            }
+            else
+            {
+                Debug.LogError("CharacterStats Instance ist null!");
+            }
+
+            UpdateUI();
         }
     }
 
-    private void Start()
-    {
-        if (CharacterStats.Instance == null)
-        {
-            Debug.LogError("CharacterStats.Instance ist null! Stelle sicher, dass CharacterStats in der Szene existiert.");
-            return; // verhindert weitere Fehler
-        }
-
-        // Werte aus CharacterStats ziehen und ins UI übertragen
-        SetCharacterStats(
-            CharacterStats.Instance.CharacterName,
-            CharacterStats.Instance.Stamina,
-            CharacterStats.Instance.Health,
-            CharacterStats.Instance.Level,
-            CharacterStats.Instance.Rank
-        );
-
-        UpdateUI();
-        CharacterStats.Instance.OnStatsChanged += UpdateUI;
-    }
-
-
-
-    //Aktualisiert das UI mit aktuellen Werten
-    public void UpdateUI()
-    {
-        if (characterNameText != null) characterNameText.text = $"{characterName}";
-        if (staminaText != null) staminaText.text = $"Ausdauer: {stamina}";
-        if (hpText != null) hpText.text = $"Leben: {health}";
-        if (levelText != null) levelText.text = $"{level}";
-        if (rankText != null) rankText.text = $"{rank}";
-    }
 
     public void SetCharacterStats(string name, int stam, int hp, int lvl, string rnk)
     {
@@ -84,6 +82,25 @@ public class GameManager : MonoBehaviour
         health = hp;
         level = lvl;
         rank = rnk;
+
+        Debug.Log($"Character gesetzt: Name={characterName}, Stamina={stamina}, Health={health}, Level={level}, Rank={rank}");
+
         UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        if (characterNameText != null) characterNameText.text = $"Name: {characterName}";
+        if (staminaText != null) staminaText.text = $"Ausdauer: {stamina}";
+        if (hpText != null) hpText.text = $"Leben: {health}";
+        if (levelText != null) levelText.text = $"Level: {level}";
+        if (rankText != null) rankText.text = $"Rang: {rank}";
+
+        Debug.Log("UpdateUI aufgerufen!");
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
