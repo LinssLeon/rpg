@@ -15,9 +15,21 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene.unity
     guid: 1cbcb1b07f0484a0a88a06488026c782
   - enabled: 1
+    path: Assets/Scenes/StoryScene.unity
+    guid: dbc402a6dc81a434fb0a9922c453e98f
+  - enabled: 1
     path: Assets/Scenes/TrainingScene.unity
     guid: 5bab603e408ae47d5b898ff427f7ca38
   - enabled: 1
-    path: Assets/Scenes/BattleScene.unity
-    guid: 8b6d92680e3ad41e6a603b0856ee80c8
+    path: Assets/Scenes/TavernScene.unity
+    guid: 7a6fd5b029456464690d753f4d6f910f
+  - enabled: 1
+    path: Assets/Scenes/MissionScene.unity
+    guid: 12f6aff9eaee64164969fb87143f45ed
+  - enabled: 1
+    path: Assets/Scenes/ShopScene.unity
+    guid: 9ccba7b2dfe554e96a2033977537a43f
+  - enabled: 1
+    path: Assets/Scenes/EquipmentScene.unity
+    guid: 2debeab53c1cd41618b9ce210de08440
   m_configObjects: {}

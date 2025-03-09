@@ -10,6 +10,7 @@ public class CharacterStats : MonoBehaviour
     public int Health;
     public int Level;
     public string Rank;
+    public int Drachme;
 
     public delegate void StatsChanged();
     public event StatsChanged OnStatsChanged;
@@ -26,15 +27,16 @@ public class CharacterStats : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void UpdateStats(string characterName, int stamina, int health, int level, string rank)
+    public void UpdateStats(string characterName, int stamina, int health, int level, string rank, int drachme)
     {
         this.CharacterName = characterName;
         this.Stamina = stamina;
         this.Health = health;
         this.Level = level;
         this.Rank = rank;
+        this.Drachme = drachme;
 
-        Debug.Log($"Stats gesetzt: Name={CharacterName}, Stamina={Stamina}, Health={Health}, Level={Level}, Rank={Rank}");
+        Debug.Log($"Stats gesetzt: Name={CharacterName}, Stamina={Stamina}, Health={Health}, Level={Level}, Rank={Rank}, Drachme={Drachme}");
 
         OnStatsChanged?.Invoke();
     }

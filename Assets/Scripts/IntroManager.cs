@@ -37,7 +37,7 @@ public class IntroManager : MonoBehaviour
                 characterStatsObj.AddComponent<CharacterStats>();
             }
 
-            CharacterStats.Instance.UpdateStats(playerName, 100, 100, 1, "Rekrut");
+            CharacterStats.Instance.UpdateStats(playerName, 100, 100, 1, "Rekrut", 0);
             DontDestroyOnLoad(CharacterStats.Instance.gameObject);
 
             SceneManager.LoadScene("GameScene");

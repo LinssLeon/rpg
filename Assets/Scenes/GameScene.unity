@@ -2877,7 +2877,7 @@ GameObject:
   - component: {fileID: 2000227705}
   - component: {fileID: 2000227704}
   m_Layer: 5
-  m_Name: GoldText
+  m_Name: DrachmeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

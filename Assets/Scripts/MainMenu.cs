@@ -31,7 +31,7 @@ public class MainMenu : MonoBehaviour
         {
             Debug.LogError("GameManager is null!");
         }
-    }
+    }  
 
     public void OpenOptions()
     {
