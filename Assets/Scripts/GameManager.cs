@@ -63,26 +63,39 @@ public class GameManager : MonoBehaviour
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+{
+    if (scene.name == "GameScene" || scene.name == "TrainingScene")
     {
-        if (scene.name == "GameScene" || scene.name == "TrainingScene")
+        Debug.Log($"{scene.name} geladen, UI-Elemente werden gesucht...");
+
+        characterNameText = GameObject.Find("CharacterNameText")?.GetComponent<TextMeshProUGUI>();
+        if (characterNameText == null)
         {
-            Debug.Log($"{scene.name} geladen, UI-Elemente werden gesucht...");
-
-            characterNameText = GameObject.Find("CharacterNameText")?.GetComponent<TextMeshProUGUI>();
-            staminaText = GameObject.Find("StaminaText")?.GetComponent<TextMeshProUGUI>();
-            hpText = GameObject.Find("HPText")?.GetComponent<TextMeshProUGUI>();
-            levelText = GameObject.Find("LevelText")?.GetComponent<TextMeshProUGUI>();
-            rankText = GameObject.Find("RankText")?.GetComponent<TextMeshProUGUI>();
-            drachmeText = GameObject.Find("DrachmeText")?.GetComponent<TextMeshProUGUI>();
-
-            strengthText = GameObject.Find("StrengthText")?.GetComponent<TextMeshProUGUI>();
-            precisionText = GameObject.Find("PrecisionText")?.GetComponent<TextMeshProUGUI>();
-            agilityText = GameObject.Find("AgilityText")?.GetComponent<TextMeshProUGUI>();
-            enduranceText = GameObject.Find("EnduranceText")?.GetComponent<TextMeshProUGUI>();
-
-            UpdateUI();
+            Debug.LogError("CharacterNameText nicht gefunden!");
         }
+        staminaText = GameObject.Find("StaminaText")?.GetComponent<TextMeshProUGUI>();
+        hpText = GameObject.Find("HPText")?.GetComponent<TextMeshProUGUI>();
+        levelText = GameObject.Find("LevelText")?.GetComponent<TextMeshProUGUI>();
+        rankText = GameObject.Find("RankText")?.GetComponent<TextMeshProUGUI>();
+        drachmeText = GameObject.Find("DrachmeText")?.GetComponent<TextMeshProUGUI>();
+
+        strengthText = GameObject.Find("StrengthText")?.GetComponent<TextMeshProUGUI>();
+        precisionText = GameObject.Find("PrecisionText")?.GetComponent<TextMeshProUGUI>();
+        agilityText = GameObject.Find("AgilityText")?.GetComponent<TextMeshProUGUI>();
+        enduranceText = GameObject.Find("EnduranceText")?.GetComponent<TextMeshProUGUI>();
+
+        Debug.Log("UI-Elemente initialisiert");
+
+        // Rufe eine Methode auf, um die Charakterwerte zu setzen
+        SetCharacterStatsAfterSceneLoad();
     }
+}
+
+private void SetCharacterStatsAfterSceneLoad()
+{
+    // Hier setzen wir die Charakterwerte erneut, nachdem die Szene geladen wurde
+    SetCharacterStats(characterName, stamina, health, level, rank, drachme, strength, precision, agility, endurance);
+}
 
     public void SetCharacterStats(string name, int stam, int hp, int lvl, string rnk, int drchme, int str, int prec, int agil, int endur)
     {
@@ -104,21 +117,31 @@ public class GameManager : MonoBehaviour
     }
 
     public void UpdateUI()
+{
+    Debug.Log("UpdateUI aufgerufen!");
+
+    if (characterNameText != null)
     {
-        if (characterNameText != null) characterNameText.text = $"Name: {characterName}";
-        if (staminaText != null) staminaText.text = $"Ausdauer: {stamina}";
-        if (hpText != null) hpText.text = $"Leben: {health}";
-        if (levelText != null) levelText.text = $"Level: {level}";
-        if (rankText != null) rankText.text = $"Rang: {rank}";
-        if (drachmeText != null) drachmeText.text = $"Drachme: {drachme}";
-
-        if (strengthText != null) strengthText.text = $"Stärke: {strength}";
-        if (precisionText != null) precisionText.text = $"Präzision: {precision}";
-        if (agilityText != null) agilityText.text = $"Beweglichkeit: {agility}";
-        if (enduranceText != null) enduranceText.text = $"Ausdauer: {endurance}";
-
-        Debug.Log("UpdateUI aufgerufen!");
+        characterNameText.text = $"{characterName}";
+        Debug.Log($"CharacterNameText aktualisiert: {characterName}");
     }
+    else
+    {
+        Debug.LogError("characterNameText ist null!");
+    }
+
+    // Aktualisieren Sie die anderen UI-Elemente
+    if (staminaText != null) staminaText.text = $"Ausdauer: {stamina}";
+    if (hpText != null) hpText.text = $"Leben: {health}";
+    if (levelText != null) levelText.text = $"Level: {level}";
+    if (rankText != null) rankText.text = $"Rang: {rank}";
+    if (drachmeText != null) drachmeText.text = $"Drachme: {drachme}";
+
+    if (strengthText != null) strengthText.text = $"Stärke: {strength}";
+    if (precisionText != null) precisionText.text = $"Präzision: {precision}";
+    if (agilityText != null) agilityText.text = $"Beweglichkeit: {agility}";
+    if (enduranceText != null) enduranceText.text = $"Ausdauer: {endurance}";
+}
 
     public void IncreaseStat(string statName, int amount)
     {
