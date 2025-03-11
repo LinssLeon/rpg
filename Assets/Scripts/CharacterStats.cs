@@ -4,16 +4,17 @@ public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance { get; private set; }
 
-    [Header("Character Stats")]
-    public string CharacterName;
-    public int Stamina;
-    public int Health;
-    public int Level;
-    public string Rank;
-    public int Drachme;
+    private string characterName = "Unbekannt";
+    private int stamina = 100;
+    private int health = 100;
+    private int level = 1;
+    private string rank = "Rekrut";
+    private int drachme = 0;
 
-    public delegate void StatsChanged();
-    public event StatsChanged OnStatsChanged;
+    private int strength = 10;
+    private int precision = 10;
+    private int agility = 10;
+    private int endurance = 10;
 
     private void Awake()
     {
@@ -27,17 +28,41 @@ public class CharacterStats : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void UpdateStats(string characterName, int stamina, int health, int level, string rank, int drachme)
+    public string GetName() => characterName;
+    public int GetStamina() => stamina;
+    public int GetHealth() => health;
+    public int GetLevel() => level;
+    public string GetRank() => rank;
+    public int GetDrachme() => drachme;
+
+    public int GetStrength() => strength;
+    public int GetPrecision() => precision;
+    public int GetAgility() => agility;
+    public int GetEndurance() => endurance;
+
+    public void ChangeStamina(int amount)
     {
-        this.CharacterName = characterName;
-        this.Stamina = stamina;
-        this.Health = health;
-        this.Level = level;
-        this.Rank = rank;
-        this.Drachme = drachme;
+        stamina = Mathf.Clamp(stamina + amount, 0, 100);
+    }
 
-        Debug.Log($"Stats gesetzt: Name={CharacterName}, Stamina={Stamina}, Health={Health}, Level={Level}, Rank={Rank}, Drachme={Drachme}");
+    public void IncreaseStat(string statName, int amount)
+    {
+        switch (statName)
+        {
+            case "Strength": strength += amount; break;
+            case "Precision": precision += amount; break;
+            case "Agility": agility += amount; break;
+            case "Endurance": endurance += amount; break;
+        }
+    }
 
-        OnStatsChanged?.Invoke();
+    public void UpdateStats(string name, int hp, int stam, int lvl, string playerRank, int drchme)
+    {
+        characterName = name;
+        health = hp;
+        stamina = stam;
+        level = lvl;
+        rank = playerRank;
+        drachme = drchme;
     }
 }

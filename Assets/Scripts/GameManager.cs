@@ -66,36 +66,57 @@ public class GameManager : MonoBehaviour
 {
     if (scene.name == "GameScene" || scene.name == "TrainingScene")
     {
-        Debug.Log($"{scene.name} geladen, UI-Elemente werden gesucht...");
+        Debug.Log($"{scene.name} geladen, warte auf UI-Elemente...");
 
-        characterNameText = GameObject.Find("CharacterNameText")?.GetComponent<TextMeshProUGUI>();
-        if (characterNameText == null)
-        {
-            Debug.LogError("CharacterNameText nicht gefunden!");
-        }
-        staminaText = GameObject.Find("StaminaText")?.GetComponent<TextMeshProUGUI>();
-        hpText = GameObject.Find("HPText")?.GetComponent<TextMeshProUGUI>();
-        levelText = GameObject.Find("LevelText")?.GetComponent<TextMeshProUGUI>();
-        rankText = GameObject.Find("RankText")?.GetComponent<TextMeshProUGUI>();
-        drachmeText = GameObject.Find("DrachmeText")?.GetComponent<TextMeshProUGUI>();
-
-        strengthText = GameObject.Find("StrengthText")?.GetComponent<TextMeshProUGUI>();
-        precisionText = GameObject.Find("PrecisionText")?.GetComponent<TextMeshProUGUI>();
-        agilityText = GameObject.Find("AgilityText")?.GetComponent<TextMeshProUGUI>();
-        enduranceText = GameObject.Find("EnduranceText")?.GetComponent<TextMeshProUGUI>();
-
-        Debug.Log("UI-Elemente initialisiert");
-
-        // Rufe eine Methode auf, um die Charakterwerte zu setzen
-        SetCharacterStatsAfterSceneLoad();
+        StartCoroutine(InitializeUI());
     }
 }
 
+private IEnumerator InitializeUI()
+{
+    yield return new WaitForSeconds(0.1f); // kurzes Delay, um sicherzustellen, dass die Szene vollständig geladen ist
+
+    characterNameText = GameObject.Find("CharacterNameText")?.GetComponent<TextMeshProUGUI>();
+    staminaText = GameObject.Find("StaminaText")?.GetComponent<TextMeshProUGUI>();
+    hpText = GameObject.Find("HPText")?.GetComponent<TextMeshProUGUI>();
+    levelText = GameObject.Find("LevelText")?.GetComponent<TextMeshProUGUI>();
+    rankText = GameObject.Find("RankText")?.GetComponent<TextMeshProUGUI>();
+    drachmeText = GameObject.Find("DrachmeText")?.GetComponent<TextMeshProUGUI>();
+
+    strengthText = GameObject.Find("StrengthText")?.GetComponent<TextMeshProUGUI>();
+    precisionText = GameObject.Find("PrecisionText")?.GetComponent<TextMeshProUGUI>();
+    agilityText = GameObject.Find("AgilityText")?.GetComponent<TextMeshProUGUI>();
+    enduranceText = GameObject.Find("EnduranceText")?.GetComponent<TextMeshProUGUI>();
+
+    Debug.Log("UI-Elemente initialisiert");
+
+    SetCharacterStatsAfterSceneLoad();
+}
+
+
 private void SetCharacterStatsAfterSceneLoad()
 {
-    // Hier setzen wir die Charakterwerte erneut, nachdem die Szene geladen wurde
-    SetCharacterStats(characterName, stamina, health, level, rank, drachme, strength, precision, agility, endurance);
+    if (CharacterStats.Instance != null)
+    {
+        SetCharacterStats(
+            CharacterStats.Instance.GetName(),
+            CharacterStats.Instance.GetStamina(),
+            CharacterStats.Instance.GetHealth(),
+            CharacterStats.Instance.GetLevel(),
+            CharacterStats.Instance.GetRank(),
+            CharacterStats.Instance.GetDrachme(),
+            CharacterStats.Instance.GetStrength(),
+            CharacterStats.Instance.GetPrecision(),
+            CharacterStats.Instance.GetAgility(),
+            CharacterStats.Instance.GetEndurance()
+        );
+    }
+    else
+    {
+        Debug.LogError("CharacterStats.Instance ist null. Werte können nicht geladen werden.");
+    }
 }
+
 
     public void SetCharacterStats(string name, int stam, int hp, int lvl, string rnk, int drchme, int str, int prec, int agil, int endur)
     {

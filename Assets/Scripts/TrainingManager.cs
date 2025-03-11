@@ -20,25 +20,34 @@ public class TrainingManager : MonoBehaviour
     public TextMeshProUGUI enduranceText;
     public TextMeshProUGUI feedbackText;
 
-    private void Start()
+    private void OnEnable()
+{
+    if (GameManager.Instance == null)
     {
-        if (GameManager.Instance == null)
-        {
-            Debug.LogError("GameManager nicht gefunden!");
-            return;
-        }
-
-        // Buttons mit Funktionen verknüpfen
-        spearThrowButton.onClick.AddListener(() => Train("Speerwerfen", 10, "Precision"));
-        shieldDrillButton.onClick.AddListener(() => Train("Schildübungen", 15, "Strength"));
-        enduranceRunButton.onClick.AddListener(() => Train("Ausdauerlauf", 20, "Endurance"));
-        swordPracticeButton.onClick.AddListener(() => Train("Schwertkampf", 12, "Agility"));
-
-        backToGameSceneButton.onClick.AddListener(ReturnToGameScene);
-
-        // UI initial laden
-        UpdateUI();
+        Debug.LogError("GameManager nicht gefunden!");
+        return;
     }
+
+    // Buttons mit Funktionen verknüpfen
+    spearThrowButton.onClick.RemoveAllListeners();
+    spearThrowButton.onClick.AddListener(() => Train("Speerwerfen", 10, "Precision"));
+
+    shieldDrillButton.onClick.RemoveAllListeners();
+    shieldDrillButton.onClick.AddListener(() => Train("Schildübungen", 15, "Strength"));
+
+    enduranceRunButton.onClick.RemoveAllListeners();
+    enduranceRunButton.onClick.AddListener(() => Train("Ausdauerlauf", 20, "Endurance"));
+
+    swordPracticeButton.onClick.RemoveAllListeners();
+    swordPracticeButton.onClick.AddListener(() => Train("Schwertkampf", 12, "Agility"));
+
+    backToGameSceneButton.onClick.RemoveAllListeners();
+    backToGameSceneButton.onClick.AddListener(ReturnToGameScene);
+
+    UpdateUI();
+}
+
+
 
     private void Train(string trainingType, int staminaCost, string statToBoost)
     {
