@@ -6,75 +6,45 @@ using UnityEngine.SceneManagement;
 public class TrainingManager : MonoBehaviour
 {
     [Header("Training Buttons")]
-    public Button spearThrowButton;
-    public Button shieldDrillButton;
-    public Button enduranceRunButton;
-    public Button swordPracticeButton;
-    public Button backToGameSceneButton;
+    [SerializeField] private Button spearThrowButton;
+    [SerializeField] private Button shieldDrillButton;
+    [SerializeField] private Button enduranceRunButton;
+    [SerializeField] private Button swordPracticeButton;
+    [SerializeField] private Button backToGameSceneButton;
 
-    [Header("UI Elements")]
-    public TextMeshProUGUI staminaText;
-    public TextMeshProUGUI strengthText;
-    public TextMeshProUGUI precisionText;
-    public TextMeshProUGUI agilityText;
-    public TextMeshProUGUI enduranceText;
-    public TextMeshProUGUI feedbackText;
+    [Header("Feedback")]
+    [SerializeField] private TextMeshProUGUI feedbackText;
 
     private void OnEnable()
 {
-    if (GameManager.Instance == null)
-    {
-        Debug.LogError("GameManager nicht gefunden!");
-        return;
-    }
+    if (GameManager.Instance == null) return;
 
-    // Buttons mit Funktionen verknüpfen
-    spearThrowButton.onClick.RemoveAllListeners();
+    // Training-Buttons zuweisen
     spearThrowButton.onClick.AddListener(() => Train("Speerwerfen", 10, "Precision"));
-
-    shieldDrillButton.onClick.RemoveAllListeners();
     shieldDrillButton.onClick.AddListener(() => Train("Schildübungen", 15, "Strength"));
-
-    enduranceRunButton.onClick.RemoveAllListeners();
     enduranceRunButton.onClick.AddListener(() => Train("Ausdauerlauf", 20, "Endurance"));
-
-    swordPracticeButton.onClick.RemoveAllListeners();
     swordPracticeButton.onClick.AddListener(() => Train("Schwertkampf", 12, "Agility"));
 
-    backToGameSceneButton.onClick.RemoveAllListeners();
-    backToGameSceneButton.onClick.AddListener(ReturnToGameScene);
-
-    UpdateUI();
+    // Debug vor Szenenwechsel
+    backToGameSceneButton.onClick.AddListener(() =>
+    {
+        Debug.Log("Vor Szenenwechsel: Stamina = " + CharacterStats.Instance.GetStamina());
+        SceneManager.LoadScene("GameScene");
+    });
 }
-
 
 
     private void Train(string trainingType, int staminaCost, string statToBoost)
     {
-        if (GameManager.Instance.GetStamina() >= staminaCost)
+        if (CharacterStats.Instance.GetStamina() >= staminaCost)
         {
-            GameManager.Instance.DecreaseStamina(staminaCost);
+            GameManager.Instance.AdjustStamina(-staminaCost);
             GameManager.Instance.IncreaseStat(statToBoost, 1);
-            feedbackText.text = $"{trainingType} abgeschlossen! +1 {statToBoost}. Verbleibende Ausdauer: {GameManager.Instance.GetStamina()}";
-            UpdateUI();
+            feedbackText.text = $"{trainingType} abgeschlossen! +1 {statToBoost}.";
         }
         else
         {
-            feedbackText.text = "Nicht genug Ausdauer für dieses Training!";
+            feedbackText.text = "Nicht genug Ausdauer!";
         }
-    }
-
-    private void UpdateUI()
-    {
-        staminaText.text = $"Ausdauer: {GameManager.Instance.GetStamina()}";
-        strengthText.text = $"Stärke: {GameManager.Instance.GetStrength()}";
-        precisionText.text = $"Präzision: {GameManager.Instance.GetPrecision()}";
-        agilityText.text = $"Beweglichkeit: {GameManager.Instance.GetAgility()}";
-        enduranceText.text = $"Ausdauer: {GameManager.Instance.GetEndurance()}";
-    }
-
-    public void ReturnToGameScene()
-    {
-        SceneManager.LoadScene("GameScene");
     }
 }
