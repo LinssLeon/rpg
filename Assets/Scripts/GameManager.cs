@@ -44,40 +44,40 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator InitializeUI(string sceneName)
     {
-        yield return new WaitForEndOfFrame(); // Sicherstellen, dass die Szene geladen ist
+        yield return new WaitForEndOfFrame(); // Warten, bis die Szene vollständig geladen ist
         BindUIElements(sceneName);
         UpdateUI();
     }
 
     private void BindUIElements(string sceneName)
     {
-        if (sceneName == "GameScene" || sceneName == "TrainingScene")
+        // GameScene UI
+        if (sceneName == "GameScene")
         {
-            characterNameText = FindTextElement("CharacterNameText");
-            staminaText = FindTextElement("StaminaText");
-            hpText = FindTextElement("HPText");
-            levelText = FindTextElement("LevelText");
-            rankText = FindTextElement("RankText");
-            drachmeText = FindTextElement("DrachmeText");
+            characterNameText = TryFindTextElement("CharacterNameText");
+            staminaText = TryFindTextElement("StaminaText");
+            hpText = TryFindTextElement("HPText");
+            levelText = TryFindTextElement("LevelText");
+            rankText = TryFindTextElement("RankText");
+            drachmeText = TryFindTextElement("DrachmeText");
         }
 
-        if (sceneName == "TrainingScene") // Nur in der Trainingsszene nötig
+        // TrainingScene UI
+        if (sceneName == "TrainingScene")
         {
-            strengthText = FindTextElement("StrengthText");
-            precisionText = FindTextElement("PrecisionText");
-            agilityText = FindTextElement("AgilityText");
-            enduranceText = FindTextElement("EnduranceText");
+            characterNameText = TryFindTextElement("CharacterNameText");
+            staminaText = TryFindTextElement("StaminaText");
+            strengthText = TryFindTextElement("StrengthText");
+            precisionText = TryFindTextElement("PrecisionText");
+            agilityText = TryFindTextElement("AgilityText");
+            enduranceText = TryFindTextElement("EnduranceText");
         }
     }
 
-    private TextMeshProUGUI FindTextElement(string name)
+    private TextMeshProUGUI TryFindTextElement(string name)
     {
         var element = GameObject.Find(name)?.GetComponent<TextMeshProUGUI>();
-        if (element == null)
-        {
-            Debug.LogWarning($"UI-Element '{name}' nicht gefunden.");
-        }
-        return element;
+        return element; // Kein Log, wenn null
     }
 
     public void UpdateUI()
@@ -86,17 +86,19 @@ public class GameManager : MonoBehaviour
 
         var stats = CharacterStats.Instance;
 
-        if (characterNameText != null) characterNameText.text = stats.GetName();
-        if (staminaText != null) staminaText.text = $"Ausdauer: {stats.GetStamina()}";
-        if (hpText != null) hpText.text = $"Leben: {stats.GetHealth()}";
-        if (levelText != null) levelText.text = $"Level: {stats.GetLevel()}";
-        if (rankText != null) rankText.text = $"Rang: {stats.GetRank()}";
-        if (drachmeText != null) drachmeText.text = $"Drachme: {stats.GetDrachme()}";
+        // GameScene-UI
+        if (characterNameText) characterNameText.text = stats.GetName();
+        if (staminaText) staminaText.text = $"Ausdauer: {stats.GetStamina()}";
+        if (hpText) hpText.text = $"Leben: {stats.GetHealth()}";
+        if (levelText) levelText.text = $"Level: {stats.GetLevel()}";
+        if (rankText) rankText.text = $"Rang: {stats.GetRank()}";
+        if (drachmeText) drachmeText.text = $"Drachme: {stats.GetDrachme()}";
 
-        if (strengthText != null) strengthText.text = $"Stärke: {stats.GetStrength()}";
-        if (precisionText != null) precisionText.text = $"Präzision: {stats.GetPrecision()}";
-        if (agilityText != null) agilityText.text = $"Beweglichkeit: {stats.GetAgility()}";
-        if (enduranceText != null) enduranceText.text = $"Ausdauer: {stats.GetEndurance()}";
+        // TrainingScene-UI
+        if (strengthText) strengthText.text = $"Stärke: {stats.GetStrength()}";
+        if (precisionText) precisionText.text = $"Präzision: {stats.GetPrecision()}";
+        if (agilityText) agilityText.text = $"Beweglichkeit: {stats.GetAgility()}";
+        if (enduranceText) enduranceText.text = $"Ausdauer: {stats.GetEndurance()}";
     }
 
     public void AdjustStamina(int amount)
