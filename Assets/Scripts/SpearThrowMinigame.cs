@@ -11,7 +11,7 @@ public class SpearThrowMinigame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI resultText;
 
     [Header("Settings")]
-    [SerializeField] private float sliderSpeed = 5f;
+    [SerializeField] private float sliderSpeed = 1f;
     [SerializeField] private int precisionReward = 2;
     [SerializeField] private int staminaCost = 10;
 
@@ -58,33 +58,40 @@ public class SpearThrowMinigame : MonoBehaviour
         }
     }
 
-    private void CheckResult()
+private void CheckResult()
+{
+    float sliderPos = slider.handleRect.position.x; // Echte X-Position des Reglers
+    float targetStart = targetZone.position.x - (targetZone.rect.width / 2);
+    float targetEnd = targetZone.position.x + (targetZone.rect.width / 2);
+
+    GameManager.Instance.AdjustStamina(-staminaCost);
+
+    if (sliderPos >= targetStart && sliderPos <= targetEnd)
     {
-        float sliderPos = slider.value;
-        float targetStart = targetZone.anchorMin.x;
-        float targetEnd = targetZone.anchorMax.x;
-
-        GameManager.Instance.AdjustStamina(-staminaCost);
-
-        if (sliderPos >= targetStart && sliderPos <= targetEnd)
-        {
-            GameManager.Instance.IncreaseStat("precision", precisionReward);
-            resultText.text = "Treffer! Präzision + " + precisionReward;
-        }
-        else
-        {
-            resultText.text = "Verfehlt! Ausdauer - " + staminaCost;
-        }
-
-        gameActive = false;
-        StartCoroutine(ResetMinigame());
+        GameManager.Instance.IncreaseStat("precision", precisionReward);
+        resultText.text = "🎯 Treffer! Präzision + " + precisionReward;
     }
+    else
+    {
+        resultText.text = "❌ Verfehlt! Ausdauer - " + staminaCost;
+    }
+
+    gameActive = false;
+    StartCoroutine(ResetMinigame());
+}
+
+
+
 
     private IEnumerator ResetMinigame()
-    {
-        yield return new WaitForSeconds(2f);
-        slider.value = 0.5f;
-        resultText.text = "";
-        gameActive = true;
-    }
+{
+    yield return new WaitForSeconds(2f);
+    slider.value = 0.5f;
+    resultText.text = "";
+    gameActive = true;
+
+    // Trainingspanel wieder anzeigen
+    FindObjectOfType<TrainingUIController>().ShowTrainingPanel();
+}
+
 }
